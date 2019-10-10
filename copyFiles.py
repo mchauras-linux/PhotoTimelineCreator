@@ -37,15 +37,26 @@ def get_date_taken(path):
 
     return dateOut
 
+def copyFile(source, dest):
+    size = os.path.getsize(source)
+    print('Copying ' + str(size) + ' Bytes of Data')
+    if size > 5000000:
+        bigFiles.append(dest + file)
+    shutil.copy2(source,dest)
+    print("File: " + source)
+    print("Destination: " + dest + "\n")
+    return size
+
 # Variable Declarations
 keepBothFiles = True
 processVideoFiles = False
 keepDuplicate = False
+bigFiles = []
 
 
 # Script start
 
-options = 'Options are: \n--keep-conflicts: keep files having same name\n--skip-conflicts: Skip file having same name\n--video: consider video files too\n--keep-duplicate: keep the files with same content irrespective of file Name'
+options = 'Options are: \n--keep-conflicts: keep files having same name\n--skip-conflicts: Skip file having same name\n--video: consider video files too\n--keep-duplicates: keep the files with same content irrespective of file Name'
 if len(sys.argv) < 3:
     print('Usage "python3 copyFiles.py <source-path> <target-path>" options')
     print('WARNING: Do not put backslash at the end of the path')
@@ -62,7 +73,7 @@ if len(sys.argv) > 3:
         keepBothFiles = False
     elif sys.argv[3] == '--video':
         processVideoFiles = True
-    elif sys.argv[3] == '--keep-duplicate':
+    elif sys.argv[3] == '--keep-duplicates':
         keepDuplicate = True
     else:
         print('Usage "python3 copyFiles.py <source-path> <target-path>" options')
@@ -78,7 +89,7 @@ if not targetDir.endswith("/"):
     targetDir = targetDir + '/'
 
 print("Source:\t" + sourceDir)
-print("Target:\t" + targetDir)
+print("Target:\t" + targetDir + '\n')
 
 for root, dirs, files in os.walk(sourceDir):
     for file in files:
@@ -94,7 +105,7 @@ for root, dirs, files in os.walk(sourceDir):
 
 
             takenDate = get_date_taken(source)
-            print(takenDate)
+            #print(takenDate)
             if not takenDate is None:
                 dest = targetDir + str(takenDate.year) + "-" + str(takenDate.strftime("%m")) +"(" + takenDate.strftime("%b") + ")/"
             else:
@@ -122,9 +133,7 @@ for root, dirs, files in os.walk(sourceDir):
             #print("Source: " + source)
             
             if not os.path.exists(dest + file):
-                shutil.copy2(source,dest)
-                print("File: " + source)
-                print("Destination: " + dest + "\n")
+                copyFile(source, dest)
             else:
                 # Separate base from extension
                 if keepBothFiles:
@@ -133,8 +142,8 @@ for root, dirs, files in os.walk(sourceDir):
                     while True:
                         new_name = os.path.join(dest, base + "_" + str(i) + extension)
                         if not os.path.exists(new_name):
-                            shutil.copy2(source, new_name)
-                            print ("Copied: " + base + extension +  " as: " + base + "_" + str(i) + extension)
+                            print ("Copying: " + base + extension +  " as: " + base + "_" + str(i) + extension)
+                            copyFile(source, new_name)
                             break
                         i += 1
                 else:
@@ -142,6 +151,9 @@ for root, dirs, files in os.walk(sourceDir):
 if not keepDuplicate:
     print('Removing Duplicate Files')
     checkDirForDuplicates([sys.argv[2]])
-
+if len(bigFiles) > 0:
+    print("\n\nFiles Larger Than 500MB are")
+    for path in bigFiles:
+        print(path)
 
 
