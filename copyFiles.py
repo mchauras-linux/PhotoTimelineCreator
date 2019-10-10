@@ -5,7 +5,7 @@ import sys
 from datetime import datetime
 from PIL import Image
 import re
-
+from duplicateFiles import checkDirForDuplicates
 
 
 def isImage(file):
@@ -40,15 +40,16 @@ def get_date_taken(path):
 # Variable Declarations
 keepBothFiles = True
 processVideoFiles = False
-
+keepDuplicate = False
 
 
 # Script start
 
+options = 'Options are: \n--keep-conflicts: keep files having same name\n--skip-conflicts: Skip file having same name\n--video: consider video files too\n--keep-duplicate: keep the files with same content irrespective of file Name'
 if len(sys.argv) < 3:
     print('Usage "python3 copyFiles.py <source-path> <target-path>" options')
     print('WARNING: Do not put backslash at the end of the path')
-    print('Options are: \n--keep-conflicts: keep files having same name\n--skip-conflicts: Skip file having same name\n--video: consider video files too')
+    print(options)
     sys.exit(-1)
 else: 
     sourceDir = sys.argv[1]
@@ -61,10 +62,12 @@ if len(sys.argv) > 3:
         keepBothFiles = False
     elif sys.argv[3] == '--video':
         processVideoFiles = True
+    elif sys.argv[3] == '--keep-duplicate':
+        keepDuplicate = True
     else:
         print('Usage "python3 copyFiles.py <source-path> <target-path>" options')
         print('WARNING: Do not put backslash at the end of the path')
-        print('Options are: \n--keep-conflicts: keep files having same name\n--skip-conflicts: Skip file having same name\n--video: consider video files too')
+        print(options)
         sys.exit(-1)
         
 
@@ -73,6 +76,9 @@ if sourceDir.endswith("/"):
     sourceDir = sourceDir[:-1]
 if not targetDir.endswith("/"):
     targetDir = targetDir + '/'
+
+print("Source:\t" + sourceDir)
+print("Target:\t" + targetDir)
 
 for root, dirs, files in os.walk(sourceDir):
     for file in files:
@@ -88,7 +94,7 @@ for root, dirs, files in os.walk(sourceDir):
 
 
             takenDate = get_date_taken(source)
-            #print(takenDate)
+            print(takenDate)
             if not takenDate is None:
                 dest = targetDir + str(takenDate.year) + "-" + str(takenDate.strftime("%m")) +"(" + takenDate.strftime("%b") + ")/"
             else:
@@ -133,7 +139,9 @@ for root, dirs, files in os.walk(sourceDir):
                         i += 1
                 else:
                     print('WARNING...!!!:\n' + source + ': Already exists\n')
-
+if not keepDuplicate:
+    print('Removing Duplicate Files')
+    checkDirForDuplicates([sys.argv[2]])
 
 
 
