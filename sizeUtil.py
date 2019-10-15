@@ -19,7 +19,7 @@ def getHumanReadableSize(size):
         humanSize = size/KB_VALUE
         return str(round(humanSize, 1)) + 'KB'
     else:
-        return str(size) + B
+        return str(size) + 'B'
 
 def getSizeInBytes(size):
     if size.endswith('GB'):
@@ -33,7 +33,7 @@ def getSizeInBytes(size):
     return int(size)
 
 def getFilesLargerThan(path, size):
-    sizeInBytes = getSizeInBytes(size)
+    sizeInBytes = getSizeInBytes(str(size))
     #print(sizeInBytes)
     for root, dirs, files in os.walk(path):
         for file in files:
@@ -41,7 +41,7 @@ def getFilesLargerThan(path, size):
             fileSizeInBytes = os.path.getsize(filePath)
             if fileSizeInBytes > sizeInBytes:
                 fileSizeReadable = getHumanReadableSize(fileSizeInBytes)
-                print('File Size: ' + fileSizeReadable + '\n' + filePath + '\n')
+                print('\nFile Size: ' + fileSizeReadable + '\n' + filePath)
 
 
 if len(sys.argv) == 2:

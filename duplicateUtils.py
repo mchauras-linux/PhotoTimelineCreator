@@ -89,8 +89,11 @@ def check_for_duplicates(paths, hash=hashlib.sha1):
             duplicate = hashes_full.get(full_hash)
             if duplicate:
                 print("Duplicate found: %s and %s" % (filename, duplicate))
+                fileToBeRemoved = duplicate
+                if len(fileToBeRemoved) < len(filename):
+                    fileToBeRemoved = filename
                 try:
-                    os.remove(duplicate)
+                    os.remove(fileToBeRemoved)
                 except FileNotFoundError:
                     if not reIterate:
                         reIterate = True
@@ -99,7 +102,7 @@ def check_for_duplicates(paths, hash=hashlib.sha1):
                 hashes_full[full_hash] = filename
     return reIterate
 
-def checkDirForDuplicates(paths): 
+def removeDuplicates(paths): 
     reIterate = True
     while reIterate:
         reIterate = check_for_duplicates(paths)
