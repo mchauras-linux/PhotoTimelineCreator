@@ -5,10 +5,11 @@ import errno
 
 #User Defined
 import fileType
+import sizeUtil
 
 def performFileCopy(source, dest):
     size = os.path.getsize(source)
-    print('Copying ' + str(size) + ' Bytes of Data')
+    print('Copying ' + sizeUtil.getHumanReadableSize(size) + ' of Data')
     shutil.copy2(source,dest)
     print("File: " + source)
     print("Destination: " + dest + "\n")
