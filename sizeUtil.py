@@ -43,10 +43,13 @@ def getFilesLargerThan(path, size):
                 fileSizeReadable = getHumanReadableSize(fileSizeInBytes)
                 print('\nFile Size: ' + fileSizeReadable + '\n' + filePath)
 
+def main():
+    if len(sys.argv) == 2:
+        getFilesLargerThan(sys.argv[1], '0')
+    elif len(sys.argv) == 3:
+        getFilesLargerThan(sys.argv[1], sys.argv[2])
+    else:
+        print('Usage python3 sizeUtil.py <Directory> <Size>')
 
-if len(sys.argv) == 2:
-    getFilesLargerThan(sys.argv[1], '0')
-elif len(sys.argv) == 3:
-    getFilesLargerThan(sys.argv[1], sys.argv[2])
-else:
-    print('Usage python3 getFilesLargerThan.py <Directory> <Size>')
+if __name__ == "__main__":
+    main()
