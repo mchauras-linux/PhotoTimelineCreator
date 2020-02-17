@@ -33,6 +33,7 @@ def getSizeInBytes(size):
     return int(size)
 
 def getFilesLargerThan(path, size):
+    count = 0
     sizeInBytes = getSizeInBytes(str(size))
     #print(sizeInBytes)
     for root, dirs, files in os.walk(path):
@@ -42,6 +43,8 @@ def getFilesLargerThan(path, size):
             if fileSizeInBytes > sizeInBytes:
                 fileSizeReadable = getHumanReadableSize(fileSizeInBytes)
                 print('\nFile Size: ' + fileSizeReadable + '\n' + filePath)
+                count = 1
+    return count
 
 def main():
     if len(sys.argv) == 2:

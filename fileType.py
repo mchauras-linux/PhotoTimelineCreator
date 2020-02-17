@@ -44,7 +44,5 @@ def isValidFileToProcess(fileToBeProcessed, listOfValidFileTypes):
             if VIDEO_FILE in listOfValidFileTypes:
                 if getFileExtension(fileToBeProcessed) in videoFileList:
                     return True
-                else:
-                    print("Bad File: " + fileToBeProcessed + "\n")
 
     return False

@@ -35,10 +35,22 @@ def main():
                 fileOperations.copyFile(sourceFilePath, destinationDir, file, skipConflicts)
 
     if not keepDuplicates:
+        print()
+        print("*************************************************************")
+        print("                Removing Duplicates")
+        print("*************************************************************")
         duplicateUtils.removeDuplicates([targetDir])
-        print("\nDuplicates Removed")
+        print()
+        print("*************************************************************")
+        print("                 Duplicates Removed")
+        print("*************************************************************")
 
-    sizeUtil.getFilesLargerThan(targetDir, bigFileThreshold)
+    print("*************************************************************")
+    print("                Files Greater Than "+ sizeUtil.getHumanReadableSize(bigFileThreshold))
+    count = sizeUtil.getFilesLargerThan(targetDir, bigFileThreshold)
+    if(count == 0):
+        print("              No file is larger than "+ sizeUtil.getHumanReadableSize(bigFileThreshold))
+    print("*************************************************************")
 
 if __name__ == "__main__":
     main()
