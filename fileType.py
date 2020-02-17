@@ -1,5 +1,5 @@
 import os
-
+from PIL import Image
 #Constants
 IMAGE_FILE = 'image'
 VIDEO_FILE = 'video'
@@ -33,15 +33,18 @@ def getFileName(fileToBeProcessed):
     filename, file_extension = os.path.splitext(fileToBeProcessed)
     return filename
 
-
 def isValidFileToProcess(fileToBeProcessed, listOfValidFileTypes):
     #For Image File
     if IMAGE_FILE in listOfValidFileTypes:
-        if getFileExtension(fileToBeProcessed) in imageFileList:
+        try:
+            img = Image.open(fileToBeProcessed, mode='r')
+            img.verify()
             return True
-    
-    if VIDEO_FILE in listOfValidFileTypes:
-        if getFileExtension(fileToBeProcessed) in videoFileList:
-            return True
+        except (IOError, SyntaxError) as e:
+            if VIDEO_FILE in listOfValidFileTypes:
+                if getFileExtension(fileToBeProcessed) in videoFileList:
+                    return True
+                else:
+                    print("Bad File: " + fileToBeProcessed + "\n")
 
     return False

@@ -26,9 +26,9 @@ def main():
     #Iterating Recursively through the source path
     for root, dirs, files in os.walk(sourceDir):
         for file in files:
-            if fileType.isValidFileToProcess(file, fileTypeToBeProcessed):
-                #generate Source File Path from root
-                sourceFilePath = os.path.abspath(os.path.join(root, file))
+            #generate Source File Path from root
+            sourceFilePath = os.path.abspath(os.path.join(root, file))
+            if fileType.isValidFileToProcess(sourceFilePath, fileTypeToBeProcessed):
                 #Generate Dest File Path form root
                 destinationDir = fileOperations.getDestFile(sourceFilePath, targetDir, timeUtil.get_date_taken(sourceFilePath), isFolderDepthDay)
                 fileOperations.createPath(destinationDir)
@@ -36,6 +36,7 @@ def main():
 
     if not keepDuplicates:
         duplicateUtils.removeDuplicates([targetDir])
+        print("\nDuplicates Removed")
 
     sizeUtil.getFilesLargerThan(targetDir, bigFileThreshold)
 
