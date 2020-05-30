@@ -6,6 +6,7 @@ import errno
 #User Defined
 import fileType
 import sizeUtil
+import timeUtil
 
 def performFileCopy(source, dest):
     size = os.path.getsize(source)
@@ -17,16 +18,19 @@ def performFileCopy(source, dest):
 
 def copyFile(source, destDir, file, skipConflicts):
     size = 0
-    if not os.path.exists(destDir + file):
-        size = performFileCopy(source, destDir)
+    #base = fileType.getFileName(file)
+    extension = fileType.getFileExtension(file)
+    fileTime = timeUtil.get_time_taken(source)
+    fileTime = str(timeUtil.get_date_taken(source)) + "-" +str(fileTime)
+    destFilePath = os.path.join(destDir, fileTime + extension)
+    if not os.path.exists(destFilePath):
+        size = performFileCopy(source, destFilePath)
     else:
         # Separate base from extension
         if not skipConflicts:
-            base = fileType.getFileName(file)
-            extension = fileType.getFileExtension(file)
             i = 1
             while True:
-                new_name = os.path.join(destDir, base + "_" + str(i) + extension)
+                new_name = os.path.join(destDir, fileTime + "_" + str(i) + extension)
                 if not os.path.exists(new_name):
                     size = performFileCopy(source, new_name)
                     break

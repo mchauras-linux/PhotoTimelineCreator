@@ -1,6 +1,7 @@
 from PIL import Image
 import re
 from datetime import datetime
+import os
 
 #Visit for details on Tag "https://www.awaresystems.be/imaging/tiff/tifftags/privateifd/exif.html"
 def get_date_taken(path):
@@ -24,6 +25,9 @@ def get_time_taken(path):
         timeOut = datetime.strptime(extractedTime, '%H:%M:%S').time()
         print(timeOut)
     except Exception:
-        print("No metadata Found, Copying to modified date path")
-        return None
+        #print("No metadata Found, Copying to modified date path")
+        stat = os.stat(path)
+        #timeOut = datetime.strptime(stat.st_mtime, '%H:%M:%S').time()
+        timeOut = datetime.fromtimestamp(stat.st_mtime).strftime('%H:%M:%S')
+        timeOut = datetime.strptime(timeOut, '%H:%M:%S')
     return timeOut
