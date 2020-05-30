@@ -1,6 +1,8 @@
 # PhotoTimelineCreator
 Create a timeline based on when the photo is clicked
 
+# View This README as RAW
+
 usage: main.py [-h] -s SOURCE -d DESTINATION [-c] [-v] [-l {d,m}] [-k] [-f [{image,video} [{image,video} ...]]] [-b BIG_FILE_SIZE]
 
 Copy Video and Images in a timeline like folder structure
