@@ -21,7 +21,7 @@ def copyFile(source, destDir, file, skipConflicts):
     #base = fileType.getFileName(file)
     extension = fileType.getFileExtension(file)
     fileTime = timeUtil.get_time_taken(source)
-    fileTime = str(timeUtil.get_date_taken(source)) + "-" +str(fileTime)
+    fileTime = str(timeUtil.get_date_taken(source)) + "(" +str(fileTime) + ")"
     destFilePath = os.path.join(destDir, fileTime + extension)
     if not os.path.exists(destFilePath):
         size = performFileCopy(source, destFilePath)
