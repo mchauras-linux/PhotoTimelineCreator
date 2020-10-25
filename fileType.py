@@ -7,7 +7,7 @@ VIDEO_FILE = 'video'
 #Supported File types
 #Just add extension to support file type
 imageFileList = [".jpg", ".png", ".jpeg", ".gif", ".raw"]
-videoFileList = [".avi", ".flv", ".wmv", ".mov", ".mp4", ".mkv"]
+videoFileList = [".avi", ".flv", ".wmv", ".mov", ".mp4", ".mkv", ".mpg"]
 
 
 def isVideoFile(fileToBeProcessed):
