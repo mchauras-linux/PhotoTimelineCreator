@@ -108,3 +108,8 @@ def removeDuplicates(paths):
         reIterate = check_for_duplicates(paths)
 
 
+if __name__ == "__main__":
+    if sys.argv[1:]:
+        removeDuplicates(sys.argv[1:])
+    else:
+        print("Please pass the paths to check as parameters to the script")
